@@ -4,15 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.backend.models.Course;
 import com.spring.backend.models.dto.CourseDto;
+import com.spring.backend.models.dto.CourseResponse;
 import com.spring.backend.models.dto.TeacherDto;
 import com.spring.backend.service.CourseService;
 import com.spring.backend.service.TeacherService;
@@ -52,5 +55,16 @@ public class TeacherController {
 		courseService.deletCourse(id);
 		return new ResponseEntity<>("Course deleted successfully.", HttpStatus.OK);
 	}
+	
+	//get all courses with pagination by id
+	@GetMapping("/{id}/courses")
+    public ResponseEntity<CourseResponse> getAllCourses(
+    		@PathVariable int id,
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize
+    ) {
+        return new ResponseEntity<>(teacherService.getAllCourses(id, pageNo, pageSize), HttpStatus.OK);
+    }
+	
 	
 }	

@@ -3,6 +3,7 @@ package com.spring.backend.service;
 import java.util.List;
 
 import com.spring.backend.models.dto.CourseDto;
+import com.spring.backend.models.dto.CourseResponse;
 
 public interface CourseService {
 	
@@ -13,4 +14,6 @@ public interface CourseService {
 	CourseDto updateCourse(int teacherId, int courseId, CourseDto courseDto);
 	
 	void deletCourse(int id);
+	
+	CourseResponse getAllCourses(int pageNo, int pageSize);
 }

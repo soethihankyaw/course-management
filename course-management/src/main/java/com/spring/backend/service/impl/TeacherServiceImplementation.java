@@ -1,10 +1,20 @@
 package com.spring.backend.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.spring.backend.models.Course;
 import com.spring.backend.models.Teacher;
+import com.spring.backend.models.dto.CourseDto;
+import com.spring.backend.models.dto.CourseResponse;
 import com.spring.backend.models.dto.TeacherDto;
+import com.spring.backend.repository.CourseRepository;
 import com.spring.backend.repository.TeacherRepository;
 import com.spring.backend.service.TeacherService;
 
@@ -13,6 +23,9 @@ public class TeacherServiceImplementation implements TeacherService{
 
 	@Autowired
 	private TeacherRepository teacherRepository;
+	
+	@Autowired
+	private CourseRepository courseRepository;
 	
 	//create teacher
 	@Override
@@ -24,13 +37,13 @@ public class TeacherServiceImplementation implements TeacherService{
 		
 		Teacher newTeacher = teacherRepository.save(teacher);
 		
-		TeacherDto teacherResponse = new TeacherDto();
-		teacherResponse.setId(newTeacher.getId());
-		teacherResponse.setUsername(newTeacher.getUsername());
-		teacherResponse.setPassword(newTeacher.getPassword());
-		teacherResponse.setPhone(newTeacher.getPhone());
+		TeacherDto newTeacherDto = new TeacherDto();
+		newTeacherDto.setId(newTeacher.getId());
+		newTeacherDto.setUsername(newTeacher.getUsername());
+		newTeacherDto.setPassword(newTeacher.getPassword());
+		newTeacherDto.setPhone(newTeacher.getPhone());
 		
-		return teacherResponse;
+		return newTeacherDto;
 	}
 	
 	//entity to dto
@@ -54,6 +67,36 @@ public class TeacherServiceImplementation implements TeacherService{
 		teacher.setPhone(teacherDto.getPhone());
 		
 		return teacher;
+	}
+	
+	private CourseDto mapToCourseDto(Course course) {
+		CourseDto courseDto = new CourseDto();
+		
+		courseDto.setId(course.getId());
+		courseDto.setCourseName(course.getCourseName());
+		courseDto.setDescription(course.getDescription());
+		courseDto.setCourseFees(course.getCourseFees());
+		courseDto.setDuration(course.getDuration());
+		
+		return courseDto;	
+	}
+
+	@Override
+	public CourseResponse getAllCourses(int teacherId, int pageNo, int pageSize) {
+		Pageable pageable = PageRequest.of(pageNo, pageSize);
+		Page<Course> courses = courseRepository.findAllByTeacherId(teacherId, pageable);
+		List<Course> listOfCourse = courses.getContent();
+		List<CourseDto> content = listOfCourse.stream()
+									.map(c -> mapToCourseDto(c)).collect(Collectors.toList());
+		CourseResponse courseResponse = new CourseResponse();
+		courseResponse.setContent(content);
+		courseResponse.setPageNo(courses.getNumber());
+		courseResponse.setPageSize(courses.getSize());
+		courseResponse.setTotalElement(courses.getTotalElements());
+		courseResponse.setTotalPages(courses.getTotalPages());
+		courseResponse.setLast(courses.isLast());
+		
+		return courseResponse;
 	}
 	
 }

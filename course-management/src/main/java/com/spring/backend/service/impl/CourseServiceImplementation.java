@@ -1,8 +1,12 @@
 package com.spring.backend.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.spring.backend.exception.CourseNotFoundException;
@@ -10,6 +14,7 @@ import com.spring.backend.exception.TeacherNotFoundException;
 import com.spring.backend.models.Course;
 import com.spring.backend.models.Teacher;
 import com.spring.backend.models.dto.CourseDto;
+import com.spring.backend.models.dto.CourseResponse;
 import com.spring.backend.repository.CourseRepository;
 import com.spring.backend.repository.TeacherRepository;
 import com.spring.backend.service.CourseService;
@@ -92,5 +97,25 @@ public class CourseServiceImplementation implements CourseService{
 		
 		return course;
 		
+	}
+
+	//get all courses with pagination
+	@Override
+	public CourseResponse getAllCourses(int pageNo, int pageSize) {
+		Pageable pageable = PageRequest.of(pageNo, pageSize);
+		Page<Course> courses = courseRepository.findAll(pageable);
+		List<Course> listOfCourse = courses.getContent();
+		List<CourseDto> content = listOfCourse.stream()
+										.map(c -> mapToDto(c)).collect(Collectors.toList());
+		
+		CourseResponse courseResponse = new CourseResponse();
+		courseResponse.setContent(content);
+		courseResponse.setPageNo(courses.getNumber());
+		courseResponse.setPageSize(courses.getSize());
+		courseResponse.setTotalElement(courses.getTotalElements());
+		courseResponse.setTotalPages(courses.getTotalPages());
+		courseResponse.setLast(courses.isLast());
+		
+		return courseResponse;
 	}
 }
