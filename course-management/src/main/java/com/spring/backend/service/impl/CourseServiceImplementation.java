@@ -2,9 +2,95 @@ package com.spring.backend.service.impl;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.spring.backend.exception.CourseNotFoundException;
+import com.spring.backend.exception.TeacherNotFoundException;
+import com.spring.backend.models.Course;
+import com.spring.backend.models.Teacher;
 import com.spring.backend.models.dto.CourseDto;
+import com.spring.backend.repository.CourseRepository;
+import com.spring.backend.repository.TeacherRepository;
 import com.spring.backend.service.CourseService;
 
+@Service
 public class CourseServiceImplementation implements CourseService{
 	
+	@Autowired
+	private CourseRepository courseRepository;
+	
+	@Autowired
+	private TeacherRepository teacherRepository;
+	
+	//create course
+	@Override
+	public CourseDto createCourse(int teacherId, CourseDto courseDto) {
+		Course course = mapToEntity(courseDto);
+		
+		Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(()-> new TeacherNotFoundException("Teacher not found"));	
+		course.setTeacher(teacher);
+		
+		Course newCourse = courseRepository.save(course);
+		return mapToDto(newCourse);
+	}
+
+
+	@Override
+	public CourseDto getCourseById(int id) {
+		
+		return null;
+	}
+	
+	//update Course
+	@Override
+	public CourseDto updateCourse(int teacherId, int courseId, CourseDto courseDto) {
+		Course course = courseRepository.findById(courseId).orElseThrow(() -> new CourseNotFoundException("Course Not Found"));
+		
+		Teacher teacher = teacherRepository.findById(teacherId).orElseThrow(() -> new TeacherNotFoundException("Teacher Not Found"));
+		
+		course.setCourseName(courseDto.getCourseName());
+		course.setDescription(courseDto.getDescription());
+		course.setDuration(courseDto.getDuration());
+		course.setCourseFees(courseDto.getCourseFees());
+		course.setTeacher(teacher);
+		
+		Course updatedCourse = courseRepository.save(course);
+		
+		return mapToDto(updatedCourse);
+	}
+	
+	//delete Course
+	@Override
+	public void deletCourse(int id) {
+		Course course = courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException("Course Not Found"));
+		courseRepository.delete(course);
+	}
+	
+	//entity to dto
+	private CourseDto mapToDto(Course course) {
+		CourseDto courseDto = new CourseDto();
+		
+		courseDto.setId(course.getId());
+		courseDto.setCourseName(course.getCourseName());
+		courseDto.setDescription(course.getDescription());
+		courseDto.setCourseFees(course.getCourseFees());
+		courseDto.setDuration(course.getDuration());
+		
+		return courseDto;	
+	}
+	
+	//dto to entity
+	private Course mapToEntity(CourseDto courseDto) {
+		Course course = new Course();
+		
+		course.setId(courseDto.getId());
+		course.setCourseName(courseDto.getCourseName());
+		course.setDescription(courseDto.getDescription());
+		course.setDuration(courseDto.getDuration());
+		course.setCourseFees(courseDto.getCourseFees());
+		
+		return course;
+		
+	}
 }

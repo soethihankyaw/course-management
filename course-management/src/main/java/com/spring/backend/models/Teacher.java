@@ -1,6 +1,7 @@
 package com.spring.backend.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +22,7 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Teacher implements Serializable{
@@ -39,7 +42,5 @@ public class Teacher implements Serializable{
 	@Column(nullable = false)
 	private String phone;
 	
-	@OneToMany(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "teacher_id")
-	private List<Course> courses;
+	
 }

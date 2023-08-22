@@ -1,5 +1,8 @@
 package com.spring.backend.service;
 
-public interface TeacherService {
+import com.spring.backend.models.dto.TeacherDto;
 
+public interface TeacherService {
+	
+	TeacherDto createTeacher(TeacherDto teacherDto);
 }
