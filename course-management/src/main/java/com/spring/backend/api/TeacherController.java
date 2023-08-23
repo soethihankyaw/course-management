@@ -21,7 +21,7 @@ import com.spring.backend.service.CourseService;
 import com.spring.backend.service.TeacherService;
 
 @RestController
-@RequestMapping("/teacher")
+@RequestMapping("/api/auth/teacher")
 public class TeacherController {
 	
 	@Autowired
