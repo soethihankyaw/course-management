@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 @Setter
@@ -14,9 +15,16 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TeacherDto {
-
+	
+	
 	private int id;
-	private String username;
-	private String password;
+	
+	@NonNull
+	private String name;
+	
+	@NonNull
+	private String email;
+	
+	@NonNull
 	private String phone;
 }

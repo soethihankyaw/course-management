@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
 @Setter
@@ -14,9 +15,15 @@ import lombok.Setter;
 public class CourseDto {
 
 	private int id;
+	
+	@NonNull
 	private String courseName;
+	
+	@NonNull
 	private String description;
+	
 	private int duration;
+	
 	private double courseFees;
 	
 }

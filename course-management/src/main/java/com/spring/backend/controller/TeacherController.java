@@ -44,8 +44,8 @@ public class TeacherController {
 	
 	//update course
 	@PutMapping("/{teacherId}/course/update/{id}")
-	public ResponseEntity<CourseDto> updateCourse(@PathVariable(value="teacherId")int teacherId,@PathVariable(value="id") int reviewId, @RequestBody CourseDto courseDto) {
-		CourseDto updateCourse = courseService.updateCourse(teacherId, reviewId, courseDto);
+	public ResponseEntity<CourseDto> updateCourse(@PathVariable(value="teacherId")int teacherId,@PathVariable(value="id") int courseId, @RequestBody CourseDto courseDto) {
+		CourseDto updateCourse = courseService.updateCourse(teacherId, courseId , courseDto);
 		return new ResponseEntity<>(updateCourse, HttpStatus.OK);
 	}
 	
@@ -56,7 +56,7 @@ public class TeacherController {
 		return new ResponseEntity<>("Course deleted successfully.", HttpStatus.OK);
 	}
 	
-	//get all courses with pagination by id
+	//get all courses with pagination by teacherId
 	@GetMapping("/{id}/courses")
     public ResponseEntity<CourseResponse> getAllCourses(
     		@PathVariable int id,

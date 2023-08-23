@@ -31,16 +31,16 @@ public class TeacherServiceImplementation implements TeacherService{
 	@Override
 	public TeacherDto createTeacher(TeacherDto teacherDto) {
 		Teacher teacher = new Teacher();
-		teacher.setUsername(teacherDto.getUsername());
-		teacher.setPassword(teacherDto.getPassword());
+		teacher.setName(teacherDto.getName());
+		teacher.setEmail(teacherDto.getEmail());
 		teacher.setPhone(teacherDto.getPhone());
 		
 		Teacher newTeacher = teacherRepository.save(teacher);
 		
 		TeacherDto newTeacherDto = new TeacherDto();
 		newTeacherDto.setId(newTeacher.getId());
-		newTeacherDto.setUsername(newTeacher.getUsername());
-		newTeacherDto.setPassword(newTeacher.getPassword());
+		newTeacherDto.setName(newTeacher.getName());
+		newTeacherDto.setEmail(newTeacher.getEmail());
 		newTeacherDto.setPhone(newTeacher.getPhone());
 		
 		return newTeacherDto;
@@ -51,8 +51,8 @@ public class TeacherServiceImplementation implements TeacherService{
 		
 		TeacherDto teacherDto = new TeacherDto();
 		teacherDto.setId(teacher.getId());
-		teacherDto.setUsername(teacher.getUsername());
-		teacherDto.setPassword(teacher.getPassword());
+		teacherDto.setName(teacher.getName());
+		teacherDto.setEmail(teacher.getEmail());
 		teacherDto.setPhone(teacher.getPhone());
 		return teacherDto;
 	}
@@ -62,8 +62,8 @@ public class TeacherServiceImplementation implements TeacherService{
 		
 		Teacher teacher = new Teacher();
 		teacher.setId(teacherDto.getId());
-		teacher.setUsername(teacherDto.getUsername());
-		teacher.setPassword(teacherDto.getPassword());
+		teacher.setName(teacherDto.getName());
+		teacher.setEmail(teacherDto.getEmail());
 		teacher.setPhone(teacherDto.getPhone());
 		
 		return teacher;
