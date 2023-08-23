@@ -1,4 +1,4 @@
-package com.spring.backend.controller;
+package com.spring.backend.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.backend.models.Course;
 import com.spring.backend.models.dto.CourseDto;
 import com.spring.backend.models.dto.CourseResponse;
 import com.spring.backend.models.dto.TeacherDto;
+import com.spring.backend.models.entity.Course;
 import com.spring.backend.service.CourseService;
 import com.spring.backend.service.TeacherService;
 

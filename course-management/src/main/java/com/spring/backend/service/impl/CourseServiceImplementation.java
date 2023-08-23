@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.spring.backend.exception.CourseNotFoundException;
 import com.spring.backend.exception.TeacherNotFoundException;
-import com.spring.backend.models.Course;
-import com.spring.backend.models.Teacher;
 import com.spring.backend.models.dto.CourseDto;
 import com.spring.backend.models.dto.CourseResponse;
+import com.spring.backend.models.entity.Course;
+import com.spring.backend.models.entity.Teacher;
 import com.spring.backend.repository.CourseRepository;
 import com.spring.backend.repository.TeacherRepository;
 import com.spring.backend.service.CourseService;

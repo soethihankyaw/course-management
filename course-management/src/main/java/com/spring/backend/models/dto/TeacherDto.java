@@ -1,6 +1,6 @@
 package com.spring.backend.models.dto;
 
-import com.spring.backend.models.Teacher;
+import com.spring.backend.models.entity.Teacher;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,6 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class TeacherDto {
