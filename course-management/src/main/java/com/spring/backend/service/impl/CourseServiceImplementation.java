@@ -1,12 +1,16 @@
 package com.spring.backend.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.persistence.criteria.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.spring.backend.exception.CourseNotFoundException;
@@ -117,5 +121,54 @@ public class CourseServiceImplementation implements CourseService{
 		courseResponse.setLast(courses.isLast());
 		
 		return courseResponse;
+	}
+	
+	//filter for searching 
+	@Override
+	public CourseResponse customSearch(int pageNo, int pageSize, String courseName,
+			String description, Integer duration, Double courseFees) {
+		Pageable pageable = PageRequest.of(pageNo, pageSize);
+		Page<Course> courses = searchCourse(courseName, description, duration, courseFees, pageable);
+		List<Course> listOfCourse = courses.getContent();
+		List<CourseDto> content = listOfCourse.stream()
+										.map(c -> mapToDto(c)).collect(Collectors.toList());
+		
+		CourseResponse courseResponse = new CourseResponse();
+		courseResponse.setContent(content);
+		courseResponse.setPageNo(courses.getNumber());
+		courseResponse.setPageSize(courses.getSize());
+		courseResponse.setTotalElement(courses.getTotalElements());
+		courseResponse.setTotalPages(courses.getTotalPages());
+		courseResponse.setLast(courses.isLast());
+		
+		return courseResponse;
+	}
+	
+	
+	private Page<Course> searchCourse( String courseName,
+			String description, Integer duration, Double courseFees, Pageable pageable) {
+		Specification<Course> specification = (root, query, cb) -> {
+			List<Predicate> predicates = new ArrayList<>();
+			
+			if(courseName != null) {
+				predicates.add(cb.like(cb.lower(root.get("courseName")), "%" + courseName.toLowerCase() + "%"));
+			}
+			
+			if(description != null ) {
+				predicates.add(cb.like(cb.lower(root.get("description")), "%" + description.toLowerCase() + "%"));
+			}
+			
+			if(duration != null) {
+				predicates.add(cb.equal(root.get("duration"), duration));
+			}
+			
+			if(courseFees != null) {
+				predicates.add(cb.equal(root.get("courseFees"), courseFees));
+			}
+			
+			return cb.and(predicates.toArray(new Predicate[0]));
+		};
+		
+		return courseRepository.findAll(specification, pageable);
 	}
 }

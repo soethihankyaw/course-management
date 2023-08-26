@@ -16,4 +16,7 @@ public interface CourseService {
 	void deletCourse(int id);
 	
 	CourseResponse getAllCourses(int pageNo, int pageSize);
+	
+	CourseResponse customSearch(int pageNo, int pageSize, String courseName,
+			String description, Integer duration, Double courseFees);
 }
