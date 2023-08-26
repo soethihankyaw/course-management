@@ -43,7 +43,8 @@ public class SecurityConfig {
 			.and()
 			.authorizeRequests()
 			.antMatchers("/courses/**").permitAll()
-			.antMatchers("/api/auth/**").hasRole("ADMIN")
+			.antMatchers("/api/auth/login").permitAll()
+			.antMatchers("/api/auth/teacher/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.httpBasic();
